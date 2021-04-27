@@ -1,0 +1,88 @@
+:root {
+    --green: #00e1ff;
+    --white: #ffffff;
+    --black: #000000;
+}
+
+* {
+    color: var(--fontColor);
+    font-family: helvetica;
+}
+  
+body {
+      background: var(--bg);
+}
+
+ul {
+    font-family: helvetica;
+}
+
+li {
+    list-style: circle;
+}
+  
+.list {
+    list-style: square;
+}
+
+.box{
+    border-style:dotted;
+    border-color: var(--green);
+    width: 50%;
+    height: auto;
+    margin: auto;
+}
+
+.leftSlider{
+    margin: auto;
+}
+
+.rightSlider{
+    float: right;
+}
+
+.canvas{
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.slidecontainer{
+    display: inline-block;
+    margin: auto;
+    height: 50%;
+    width: 150px;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: var(--green);
+    color: var(--green);
+}
+
+.btn {
+    height: 60px;
+    width: 150px;
+    border-radius: 15%;
+    border:double;
+    border-color: var(--green);
+    color: var(--fontColor);
+    background-color: var(--btnFontColor);
+}
+
+.btn:focus { outline-style: none; }
+
+.light-theme {
+    --bg: var(--green);
+    --fontColor: var(--black);
+    --btnBg: var(--black);
+    --btnFontColor: var(--white);
+}
+  
+.dark-theme {
+    --bg: var(--black);
+    --fontColor: var(--green);
+    --btnBg: var(--white);
+    --btnFontColor: var(--black);
+}
+
