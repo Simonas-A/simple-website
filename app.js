@@ -214,24 +214,32 @@ function onLoad()
     var cnv = document.getElementById("cnvTarget");
     var ctx = cnv.getContext("2d");
     ctx.fillStyle = "rgb(" +(rl+rr)/2+",  "+(gl+gr)/2+", "+(bl+br)/2+")";
-    console.log("rgb(" +(rl+rr)/2+",  "+(gl+gr)/2+", "+(bl+br)/2+")");
-    console.log("Left" + rl + " " + gl + " " + bl);
-    console.log("Right" + rr + " " + gr + " " + br);
+    //console.log("rgb(" +(rl+rr)/2+",  "+(gl+gr)/2+", "+(bl+br)/2+")");
+    //console.log("Left" + rl + " " + gl + " " + bl);
+    //console.log("Right" + rr + " " + gr + " " + br);
     ctx.fillRect(0,0,cnv.width,cnv.height);
 
     if (lockedByte == 0)
     {
         rr =rl;
+        DrawCanvas(0, rr);
     }
     else if (lockedByte == 1)
     {
         gr = gl;
+        DrawCanvas(0, gr);
     }
     else if (lockedByte == 2)
     {
         br = bl;
+        DrawCanvas(0, br);
     }
 
+    
+
+    
+
+    /*
     document.getElementById("redRangeL").value = rl;
     document.getElementById("greenRangeL").value = gl;
     document.getElementById("blueRangeL").value = bl;
@@ -240,7 +248,53 @@ function onLoad()
     document.getElementById("greenRangeR").value = gr;
     document.getElementById("blueRangeR").value = br;
 
-    onSlide();
+    */
+
+    //onSlide();
+}
+
+
+function DrawCanvas(freeByte, value)
+{
+    var canvas = document.getElementById("cnv");
+    var ctx = canvas.getContext("2d");
+
+    var width = canvas.getBoundingClientRect().width;
+    var height = canvas.getBoundingClientRect().height;
+
+    
+
+    for (var i = 0; i < 256; i++)
+    {
+        var grd = ctx.createLinearGradient(0, 0, width, height);
+        if (freeByte == 0)
+        {
+            grd.addColorStop(0, "rgb(" +value+",  0, "+i+")");
+            grd.addColorStop(1, "rgb(" +value+",  255, "+i+")");
+        }
+        else if (freeByte == 1)
+        {
+            grd.addColorStop(0, "rgb(0,  "+value+", "+i+")");
+            grd.addColorStop(1, "rgb(255,  "+value+", "+i+")");
+        }
+        else if (freeByte == 2)
+        {
+            grd.addColorStop(0, "rgb(0,  "+i+", "+value+")");
+            grd.addColorStop(1, "rgb(255,  "+i+", "+value+")");
+        }
+
+        ctx.fillStyle = grd;
+        ctx.width = width;
+        ctx.height = height;
+
+
+        ctx.fillRect(0, (height / i), width, height / 256);
+
+        console.log("width: " + width);
+        console.log("height: " + height);
+        console.log("i: " + i);
+    }
+
 }
 
 /*
