@@ -24,10 +24,9 @@
         <div style="margin:auto; width:50%;">
             <img id="imageBox" src="images/greipurt.jpg" alt="Italian Trulli" hidden="true">
         </div>
-
     </div>
 
-    <div class="box">
+    <div class="sliderbox">
         <input type="range" min="0" max="255" value="0" oninput="onSlide()" class="leftSlider" id="redRangeL">
         <input type="range" min="0" max="255" value="0" oninput="onSlide()" class="rightSlider" id="redRangeR">
         <br>
@@ -36,14 +35,18 @@
         <br>
         <input type="range" min="0" max="255" value="0" oninput="onSlide()" class="leftSlider" id="blueRangeL">
         <input type="range" min="0" max="255" value="0" oninput="onSlide()" class="rightSlider" id="blueRangeR">
-        <br>
-        <div>
-            <canvas class="canvas" id="cnv">
-        </div>
+    </div>
+
+    <br>
+    
+    <div class="box">
+        <div class="dummy"></div>
+        <canvas class="canvas" id="cnv"></canvas>
     </div>
     
-
-    <canvas style="margin:auto; width:10%; height: auto; display: block;" class="canvas" id="cnvPointer"></canvas>
+    <canvas class="pointercanvas" id="cnvPointer"></canvas>
+    <canvas class="pointercanvas" id="cnvTarget"></canvas>
+    
 
     <!--
     <h1>Task List</h1>

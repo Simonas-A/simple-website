@@ -154,8 +154,8 @@ function onSlide(){
     ctx.width = width;
     ctx.height = height;
     //ctx.fillStyle = 'green';
-    console.log("ctxwidth: " + ctx.width);
-    console.log("ctxheight: " + ctx.height);
+    //console.log("ctxwidth: " + ctx.width);
+    //console.log("ctxheight: " + ctx.height);
 
     ctx.fillRect(0, 0, ctx.width, ctx.height);
 }
@@ -190,7 +190,7 @@ canvas.addEventListener('mousemove', e => {
     var ctx = cnv.getContext("2d");
     //ctx.fillStyle = hex;
     ctx.fillStyle = "rgb(" +r+",  "+g+", "+b+")";
-    console.log("X: " + x + "; Y: " + y);
+    //console.log("X: " + x + "; Y: " + y);
     //console.log("rgb(" +r+",  "+g+", "+b+")");
     //ctx.fillStyle = "red";
     ctx.fillRect(0,0,cnv.width,cnv.height);
@@ -199,9 +199,6 @@ canvas.addEventListener('mousemove', e => {
 function onLoad()
 {
     lockedByte = Math.floor(Math.random() * 3); 
-
-
-
     var minimum = 0;
     var maximum = 255;
 
@@ -213,6 +210,28 @@ function onLoad()
     var gr = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
     var br = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
 
+
+    var cnv = document.getElementById("cnvTarget");
+    var ctx = cnv.getContext("2d");
+    ctx.fillStyle = "rgb(" +(rl+rr)/2+",  "+(gl+gr)/2+", "+(bl+br)/2+")";
+    console.log("rgb(" +(rl+rr)/2+",  "+(gl+gr)/2+", "+(bl+br)/2+")");
+    console.log("Left" + rl + " " + gl + " " + bl);
+    console.log("Right" + rr + " " + gr + " " + br);
+    ctx.fillRect(0,0,cnv.width,cnv.height);
+
+    if (lockedByte == 0)
+    {
+        rr =rl;
+    }
+    else if (lockedByte == 1)
+    {
+        gr = gl;
+    }
+    else if (lockedByte == 2)
+    {
+        br = bl;
+    }
+
     document.getElementById("redRangeL").value = rl;
     document.getElementById("greenRangeL").value = gl;
     document.getElementById("blueRangeL").value = bl;
@@ -220,19 +239,6 @@ function onLoad()
     document.getElementById("redRangeR").value = rr;
     document.getElementById("greenRangeR").value = gr;
     document.getElementById("blueRangeR").value = br;
-
-    if (lockedByte == 0)
-    {
-
-    }
-    else if (lockedByte == 1)
-    {
-
-    }
-    else if (lockedByte == 2)
-    {
-        
-    }
 
     onSlide();
 }

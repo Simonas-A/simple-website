@@ -28,7 +28,17 @@ li {
 .box{
     border-style:dotted;
     border-color: var(--green);
-    width: 50%;
+    width: 30%;
+    position: relative;
+    height:auto;
+    margin: auto;
+}
+
+.sliderbox{
+    border-style:double;
+    border-color: var(--green);
+    width: 20%;
+    position: relative;
     height: auto;
     margin: auto;
 }
@@ -43,8 +53,24 @@ li {
 
 .canvas{
     width: 100%;
-    height: auto;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+}
+
+.pointercanvas{
+    width: 15%;
+    height: 120px;
     position: relative;
+    margin: auto;
+    display: block;
+}
+
+.dummy{
+    margin-top: 100%;
 }
 
 .slidecontainer{
