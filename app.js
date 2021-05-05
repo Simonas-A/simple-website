@@ -6,6 +6,9 @@ const txt = document.querySelector('.text');
 
 var lockedByte = 0;
 
+var ranX;
+var ranY;
+
 //document.getElementById("imageBox").crossOrigin = "Anonymous";
 
 switcher.addEventListener('click', function() {
@@ -210,33 +213,40 @@ function onLoad()
     var gr = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
     var br = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
 
-
     var cnv = document.getElementById("cnvTarget");
     var ctx = cnv.getContext("2d");
-    ctx.fillStyle = "rgb(" +(rl+rr)/2+",  "+(gl+gr)/2+", "+(bl+br)/2+")";
-    //console.log("rgb(" +(rl+rr)/2+",  "+(gl+gr)/2+", "+(bl+br)/2+")");
-    //console.log("Left" + rl + " " + gl + " " + bl);
-    //console.log("Right" + rr + " " + gr + " " + br);
-    ctx.fillRect(0,0,cnv.width,cnv.height);
+
+    ranX = Math.random() * 256;
+    ranY = Math.random() * 256;
+
+    
+    
 
     if (lockedByte == 0)
     {
         rr =rl;
         DrawCanvas(0, rr);
+        ctx.fillStyle = "rgb(" +rr+",  "+ranX+", "+ranY+")";
     }
     else if (lockedByte == 1)
     {
         gr = gl;
-        DrawCanvas(0, gr);
+        DrawCanvas(1, gr);
+        ctx.fillStyle = "rgb(" +ranX+",  "+gr+", "+ranY+")";
     }
     else if (lockedByte == 2)
     {
         br = bl;
-        DrawCanvas(0, br);
+        DrawCanvas(2, br);
+        ctx.fillStyle = "rgb(" +ranX+",  "+ranY+", "+br+")";
     }
 
-    
+    ctx.fillRect(0,0,cnv.width,cnv.height);
 
+    
+    //console.log("rgb(" +(rl+rr)/2+",  "+(gl+gr)/2+", "+(bl+br)/2+")");
+    //console.log("Left" + rl + " " + gl + " " + bl);
+    //console.log("Right" + rr + " " + gr + " " + br);
     
 
     /*
@@ -262,11 +272,36 @@ function DrawCanvas(freeByte, value)
     var width = canvas.getBoundingClientRect().width;
     var height = canvas.getBoundingClientRect().height;
 
+    canvas.width = width;
+    canvas.height = height;
     
 
-    for (var i = 0; i < 256; i++)
+
+    /*
+    console.log("width: " + width);
+    console.log("height: " + height);
+
+    var grd = ctx.createLinearGradient(0, 0, width, height);
+
+
+    grd.addColorStop(0, "rgb(0,0,255)");
+    grd.addColorStop(1, "rgb(255,0,0)");
+
+
+    ctx.fillStyle = grd;
+    ctx.width = width;
+    ctx.height = height;
+
+
+    ctx.fillRect(0, 0, width, height);
+    */
+
+    
+    for (var i = 0; i < 256; i+=0.1)
     {
-        var grd = ctx.createLinearGradient(0, 0, width, height);
+        //var grd = ctx.createLinearGradient(0, 0, width, height);
+        var grd = ctx.createLinearGradient(0, (height * i / 256), width, (height * i / 256) + height / 256);
+
         if (freeByte == 0)
         {
             grd.addColorStop(0, "rgb(" +value+",  0, "+i+")");
@@ -274,7 +309,7 @@ function DrawCanvas(freeByte, value)
         }
         else if (freeByte == 1)
         {
-            grd.addColorStop(0, "rgb(0,  "+value+", "+i+")");
+            grd.addColorStop(0, "rgb(0, "+value+", "+i+")");
             grd.addColorStop(1, "rgb(255,  "+value+", "+i+")");
         }
         else if (freeByte == 2)
@@ -288,14 +323,67 @@ function DrawCanvas(freeByte, value)
         ctx.height = height;
 
 
-        ctx.fillRect(0, (height / i), width, height / 256);
+        ctx.fillRect(0, (height * i / 256), width, height / 256);
 
-        console.log("width: " + width);
-        console.log("height: " + height);
-        console.log("i: " + i);
+        
     }
+    console.log("free: " + freeByte);
+    console.log("value: " + value);
 
 }
+
+
+canvas.addEventListener('click', e => {
+
+
+    var rect = e.target.getBoundingClientRect();
+    var x = e.clientX - rect.left; //x position within the element.
+    var y = e.clientY - rect.top; 
+
+    //console.log("OPA " + x * 256 / rect.width + " " + y * 256 / rect.height);
+
+    var colX = x * 256 / rect.width;
+    var colY = y * 256 / rect.height;
+
+    var distance = Math.sqrt( Math.pow(colX - ranX, 2) + Math.pow(colY - ranY, 2) );
+
+    txt.textContent = distance;
+
+    /*
+    var cnv = document.getElementById("cnvPointer");
+
+    //var rect = canvas.getBoundingClientRect();
+    //var x = e.x- rect.left;
+    //var y = e.y- canvas.top;
+
+    var rect = e.target.getBoundingClientRect();
+    var x = e.clientX - rect.left; //x position within the element.
+    var y = e.clientY - rect.top; 
+
+    //var index = (Math.floor(e.y) * canvas.width + Math.floor(e.x)) * 4;
+
+    var p = canvas.getContext("2d").getImageData(x, y, 1, 1).data; 
+    //var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
+
+    //var r = data[index];
+    //var g = data[index + 1];
+    //var b = data[index + 2];
+    //var a = data[index + 3];
+
+    var r = p[0];
+    var g = p[1];
+    var b = p[2];
+
+
+    var ctx = cnv.getContext("2d");
+    //ctx.fillStyle = hex;
+    ctx.fillStyle = "rgb(" +r+",  "+g+", "+b+")";
+    //console.log("X: " + x + "; Y: " + y);
+    //console.log("rgb(" +r+",  "+g+", "+b+")");
+    //ctx.fillStyle = "red";
+    ctx.fillRect(0,0,cnv.width,cnv.height);
+    */
+});
 
 /*
 slider.oninput = e => {
