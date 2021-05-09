@@ -6,6 +6,9 @@ const txt = document.querySelector('.text');
 
 var lockedByte = 0;
 
+var totalDistance = 0;
+var totalHits = 0;
+
 var ranX;
 var ranY;
 
@@ -332,6 +335,9 @@ function DrawCanvas(freeByte, value)
 
 }
 
+function Generate(){
+    onLoad();
+}
 
 canvas.addEventListener('click', e => {
 
@@ -347,7 +353,13 @@ canvas.addEventListener('click', e => {
 
     var distance = Math.sqrt( Math.pow(colX - ranX, 2) + Math.pow(colY - ranY, 2) );
 
+    totalDistance += distance;
+    totalHits++; 
+
     txt.textContent = distance;
+    txt.textContent +=  "\nAverage: " + (totalDistance / totalHits);
+    Generate();
+    
 
     /*
     var cnv = document.getElementById("cnvPointer");

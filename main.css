@@ -62,11 +62,11 @@ li {
 }
 
 .pointercanvas{
-    width: 15%;
+    width: 49%;
     height: 120px;
     position: relative;
     margin: auto;
-    display: block;
+    display: inline-block;
 }
 
 .dummy{

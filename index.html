@@ -10,12 +10,12 @@
 </head>
 <body class="dark-theme" onload="onLoad()">
 
-    <p class="text">Debug</p>
+    <p class="text" style="white-space: pre-wrap;">Debug <br> opa</p>
     <div>
-        <button class="btn" id="myg">Change</button>
-        <button class="btn" id="drawBtn">Draw</button>
+        <button class="btn" id="myg" hidden="true">Change</button>
+        <button class="btn" id="drawBtn" hidden="true">Draw</button>
         
-        <div class="slidecontainer">
+        <div class="slidecontainer" hidden="true">
             <input type="range" min="0" max="255" value="0" oninput="onChange()" class="slider" id="redRange">
             <input type="range" min="0" max="255" value="0" oninput="onChange()" class="slider" id="greenRange">
             <input type="range" min="0" max="255" value="0" oninput="onChange()" class="slider" id="blueRange">
@@ -44,9 +44,10 @@
         <canvas class="canvas" id="cnv"></canvas>
     </div>
     
-    <canvas class="pointercanvas" id="cnvPointer"></canvas>
-    <canvas class="pointercanvas" id="cnvTarget"></canvas>
-    
+    <div style="margin: auto;width: 30%;">
+        <canvas class="pointercanvas" id="cnvPointer"></canvas>
+        <canvas class="pointercanvas" id="cnvTarget"></canvas>
+    </div>
 
     <!--
     <h1>Task List</h1>
