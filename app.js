@@ -3,6 +3,7 @@
 const switcher = document.querySelector('.btn');
 
 const txt = document.querySelector('.text');
+const txt2 = document.querySelector('.text2');
 
 var lockedByte = 0;
 
@@ -11,6 +12,11 @@ var totalHits = 0;
 
 var ranX;
 var ranY;
+
+var timeRunning = false;
+var miliseconds = 0;
+
+var paused = false;
 
 //document.getElementById("imageBox").crossOrigin = "Anonymous";
 
@@ -168,6 +174,18 @@ function onSlide(){
 
 var canvas = document.getElementById("cnv");
 canvas.addEventListener('mousemove', e => {
+
+    if (paused)
+    {
+        return;
+    }
+
+
+    if (!timeRunning)
+    {
+        timeRunning = true;
+    }
+    
     var cnv = document.getElementById("cnvPointer");
 
     //var rect = canvas.getBoundingClientRect();
@@ -339,8 +357,31 @@ function Generate(){
     onLoad();
 }
 
+var x = setInterval(function() {
+
+    if (timeRunning)
+    {
+        miliseconds += 10;
+        txt2.textContent = (miliseconds / 1000);
+    }
+
+}, 10);
+
+
+canvas.addEventListener('mouseleave', e => {
+    //txt2.textContent = "leave";
+});
+
+canvas.addEventListener('mouseenter', e => {
+    //txt2.textContent = "enter";
+});
+
 canvas.addEventListener('click', e => {
 
+
+    timeRunning = false;
+
+    
 
     var rect = e.target.getBoundingClientRect();
     var x = e.clientX - rect.left; //x position within the element.
@@ -358,9 +399,15 @@ canvas.addEventListener('click', e => {
 
     txt.textContent = distance;
     txt.textContent +=  "\nAverage: " + (totalDistance / totalHits);
+
+    paused = true;
+
+    var x = setTimeout(function() {
     Generate();
     
-
+    miliseconds = 0;
+    paused = false;
+    }, 2000);
     /*
     var cnv = document.getElementById("cnvPointer");
 
