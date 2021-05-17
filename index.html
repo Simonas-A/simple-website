@@ -10,34 +10,9 @@
 </head>
 <body class="dark-theme" onload="onLoad()">
 
+    
     <p class="text" style="white-space: pre-wrap;display: inline-block;width: 10%;">Debug <br> opa</p>
     <p class="text2" style="white-space: pre-wrap;display: inline-block;width: 20%;">OPA</p>
-    <div>
-        <button class="btn" id="myg" hidden="true">Change</button>
-        <button class="btn" id="drawBtn" hidden="true">Draw</button>
-        
-        <div class="slidecontainer" hidden="true">
-            <input type="range" min="0" max="255" value="0" oninput="onChange()" class="slider" id="redRange">
-            <input type="range" min="0" max="255" value="0" oninput="onChange()" class="slider" id="greenRange">
-            <input type="range" min="0" max="255" value="0" oninput="onChange()" class="slider" id="blueRange">
-        </div>
-    
-        <div style="margin:auto; width:50%;">
-            <img id="imageBox" src="images/greipurt.jpg" alt="Italian Trulli" hidden="true">
-        </div>
-    </div>
-
-    <div class="sliderbox">
-        <input type="range" min="0" max="255" value="0" oninput="onSlide()" class="leftSlider" id="redRangeL">
-        <input type="range" min="0" max="255" value="0" oninput="onSlide()" class="rightSlider" id="redRangeR">
-        <br>
-        <input type="range" min="0" max="255" value="0" oninput="onSlide()" class="leftSlider" id="greenRangeL">
-        <input type="range" min="0" max="255" value="0" oninput="onSlide()" class="rightSlider" id="greenRangeR">
-        <br>
-        <input type="range" min="0" max="255" value="0" oninput="onSlide()" class="leftSlider" id="blueRangeL">
-        <input type="range" min="0" max="255" value="0" oninput="onSlide()" class="rightSlider" id="blueRangeR">
-    </div>
-
     <br>
     
     <div class="box">
@@ -50,17 +25,6 @@
         <canvas class="pointercanvas" id="cnvTarget"></canvas>
     </div>
 
-    <!--
-    <h1>Task List</h1>
-    <p id="msg">Current tasks:</p>
-    <ul>
-        <li class="list">Add visual styles</li>
-        <li class="list">Add light and dark themes</li>
-        <li>Enable switching the theme</li>
-    </ul>
-    
-    <p class="text"></p>
-    -->
     <script src="app.js"></script>
     <noscript>You need to enable JavaScript to view the full site.</noscript>
 </body>
