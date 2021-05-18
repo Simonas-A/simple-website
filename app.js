@@ -6,6 +6,7 @@ const txt = document.querySelector('.text');
 const txt2 = document.querySelector('.text2');
 
 var lockedByte = 0;
+var lockedValue = 0;
 
 var totalDistance = 0;
 var totalHits = 0;
@@ -149,22 +150,22 @@ function onLoad()
 
     if (lockedByte == 0)
     {
-        rr =rl;
-        DrawCanvas(0, rr);
+        lockedValue = rr =rl;
+        
         ctx.fillStyle = "rgb(" +rr+",  "+ranX+", "+ranY+")";
     }
     else if (lockedByte == 1)
     {
-        gr = gl;
-        DrawCanvas(1, gr);
+        lockedValue = gr = gl;
         ctx.fillStyle = "rgb(" +ranX+",  "+gr+", "+ranY+")";
     }
     else if (lockedByte == 2)
     {
-        br = bl;
-        DrawCanvas(2, br);
+        lockedValue = br = bl;
         ctx.fillStyle = "rgb(" +ranX+",  "+ranY+", "+br+")";
     }
+
+    DrawCanvas(lockedByte, lockedValue);
 
     ctx.fillRect(0,0,cnv.width,cnv.height);
 
@@ -315,23 +316,76 @@ canvas.addEventListener('click', e => {
     var canvas = document.getElementById("cnv");
     var ctx = canvas.getContext("2d");
 
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = "#c82124";
-    ctx.beginPath();
-    
-    ctx.arc(x, y, 10, 0, 360);
+    var color = GetColor(colX, colY);
+    console.log(color);
 
+    ctx.lineWidth = 5;
+    //ctx.strokeStyle = "#c82124";
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, 360);
     ctx.stroke();
+
+    ctx.strokeStyle = GetColor(ranX, ranY);
+    //ctx.strokeStyle = "#296d98";
+    ctx.beginPath();
+    ctx.arc((ranX * rect.width / 256), (ranY * rect.height / 256), 10, 0, 360);
+    ctx.stroke();
+
+    
+
     //ctx.closePath();
 
     //ctx.fill();
 
     var x = setTimeout(function() {
-    Generate();
-    miliseconds = 0;
-    paused = false;
+        Generate();
+        miliseconds = 0;
+        paused = false;
     }, 2000);
 
 
 
 });
+
+function GetColor(x, y) {
+    var v1 = x;
+    var v2 = y;
+    var v3 = lockedValue; 
+
+
+    var redHex, greenHex, blueHex;
+
+    if (lockedByte == 0)
+    {
+        redHex = GetHex(255 - v3);
+        greenHex = GetHex(255 - v1);
+        blueHex = GetHex(255 - v2);
+    }
+    else if (lockedByte == 1)
+    {
+        redHex = GetHex(255 - v1);
+        greenHex = GetHex(255 - v3);
+        blueHex = GetHex(255 - v2);
+    }
+    else if (lockedByte == 2)
+    {
+        redHex = GetHex(255 - v1);
+        greenHex = GetHex(255 - v2);
+        blueHex = GetHex(255 - v3);
+    }
+
+    return "#" + redHex + "" + greenHex + "" + blueHex;
+}
+
+function GetHex(value){
+    var Hex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
+
+    var string = "";
+
+    string = Hex[Math.round(value / 16)] + "" + Hex[Math.round(value % 16)];
+
+    console.log(value + "Hexas: " + string);
+    return string;
+
+}
