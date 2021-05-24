@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple website</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body class="dark-theme" onload="onLoad()">
+
+    <div class="box">
+        <p class="text" style="white-space: pre-wrap;display: inline-block;width: 10%;">Statistika</p>
+    </div>
+    <br>
+    <div class="box">
+        <div class="slidecontainer">
+            <input type="range" min="1" max="100" value="50" class="slider" oninput="onChange(this.value)" id="myRange">
+        </div>
+    </div>
+    <br>
+    <div class="box">
+        <a class="btn" href="index.html">back</a>
+    </div>
+    
+</body>
+</html>

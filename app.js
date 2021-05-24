@@ -8,6 +8,7 @@ const txt2 = document.querySelector('.text2');
 var lockedByte = 0;
 var lockedValue = 0;
 
+var totalTime = 0;
 var totalDistance = 0;
 var totalHits = 0;
 
@@ -169,6 +170,9 @@ function onLoad()
 
     ctx.fillRect(0,0,cnv.width,cnv.height);
 
+
+    var sliderValue = getCookie("value");
+    txt.textContent = sliderValue;
     
     //console.log("rgb(" +(rl+rr)/2+",  "+(gl+gr)/2+", "+(bl+br)/2+")");
     //console.log("Left" + rl + " " + gl + " " + bl);
@@ -283,8 +287,10 @@ canvas.addEventListener('mouseenter', e => {
 
 canvas.addEventListener('click', e => {
 
-    if (paused)
-    {
+    if (paused) {
+        Generate();
+        miliseconds = 0;
+        paused = false;
         return;
     }
 
@@ -316,20 +322,44 @@ canvas.addEventListener('click', e => {
     var canvas = document.getElementById("cnv");
     var ctx = canvas.getContext("2d");
 
-    var color = GetColor(colX, colY);
-    console.log(color);
 
-    ctx.lineWidth = 5;
+    var arcSize = distance > 15 ? 10 : 5;
+
+    ctx.lineWidth = distance > 15 ? 5 : 2;
     //ctx.strokeStyle = "#c82124";
-    ctx.strokeStyle = color;
+
+    // pointer circle
+    ctx.strokeStyle = GetColor(colX, colY);;
     ctx.beginPath();
-    ctx.arc(x, y, 10, 0, 360);
+    ctx.arc(x, y, arcSize, - 2 * Math.PI / 3, - 1 * Math.PI / 3);
     ctx.stroke();
 
+    ctx.beginPath();
+    ctx.arc(x, y, arcSize, - Math.PI / 6, Math.PI / 6);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(x, y, arcSize,  Math.PI / 3, 2 * Math.PI / 3);
+    ctx.stroke();
+
+
+    ctx.beginPath();
+    ctx.arc(x, y, arcSize, 5 * Math.PI / 6, 7 * Math.PI / 6);
+    ctx.stroke();
+
+
+
+
+    ctx.lineWidth = distance > 15 ? 3 : 1;
+    //targer circle
     ctx.strokeStyle = GetColor(ranX, ranY);
     //ctx.strokeStyle = "#296d98";
     ctx.beginPath();
-    ctx.arc((ranX * rect.width / 256), (ranY * rect.height / 256), 10, 0, 360);
+    ctx.arc((ranX * rect.width / 256), (ranY * rect.height / 256), arcSize / 2, 0, 2 * Math.PI);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc((ranX * rect.width / 256), (ranY * rect.height / 256), arcSize, 0, 2 * Math.PI);
     ctx.stroke();
 
     
@@ -339,9 +369,11 @@ canvas.addEventListener('click', e => {
     //ctx.fill();
 
     var x = setTimeout(function() {
-        Generate();
-        miliseconds = 0;
-        paused = false;
+        if (paused){
+            Generate();
+            miliseconds = 0;
+            paused = false;
+        }
     }, 2000);
 
 
@@ -388,4 +420,27 @@ function GetHex(value){
     console.log(value + "Hexas: " + string);
     return string;
 
+}
+
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {   
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
