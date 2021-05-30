@@ -1,5 +1,13 @@
 'use strict'
 
+class Hit {
+    constructor(color, distance, time){
+        this.color = color;
+        this.distance = distance;
+        this.time = time;
+    }
+}
+
 const switcher = document.querySelector('.btn');
 
 const txt = document.querySelector('.text');
@@ -19,6 +27,8 @@ var timeRunning = false;
 var miliseconds = 0;
 
 var paused = false;
+
+var hits = [];
 
 const slider = document.getElementById("myRange");
 
@@ -45,8 +55,8 @@ function onSlide(){
     canvas.width = width;
     canvas.height = height;
 
-    console.log("width: " + width);
-    console.log("height: " + height);
+    //console.log("width: " + width);
+    //console.log("height: " + height);
 
     var grd = ctx.createLinearGradient(0, 0, width, height);
 
@@ -128,51 +138,14 @@ canvas.addEventListener('mousemove', e => {
 
 function onLoad()
 {
-    lockedByte = Math.floor(Math.random() * 3); 
-    var minimum = 0;
-    var maximum = 255;
+    Generate();
 
-    var rl = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-    var gl = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-    var bl = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-
-    var rr = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-    var gr = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-    var br = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-
-    var cnv = document.getElementById("cnvTarget");
-    var ctx = cnv.getContext("2d");
-
-    ranX = Math.random() * 256;
-    ranY = Math.random() * 256;
-
-    
-    
-
-    if (lockedByte == 0)
-    {
-        lockedValue = rr =rl;
-        
-        ctx.fillStyle = "rgb(" +rr+",  "+ranX+", "+ranY+")";
-    }
-    else if (lockedByte == 1)
-    {
-        lockedValue = gr = gl;
-        ctx.fillStyle = "rgb(" +ranX+",  "+gr+", "+ranY+")";
-    }
-    else if (lockedByte == 2)
-    {
-        lockedValue = br = bl;
-        ctx.fillStyle = "rgb(" +ranX+",  "+ranY+", "+br+")";
-    }
-
-    DrawCanvas(lockedByte, lockedValue);
-
-    ctx.fillRect(0,0,cnv.width,cnv.height);
-
-
-    var sliderValue = getCookie("value");
+    var sliderValue = localStorage.getItem("value");
+    //var sliderValue = getCookie("value");
     txt.textContent = sliderValue;
+    
+
+    //hits = localStorage.getItem("hitList");
     
     //console.log("rgb(" +(rl+rr)/2+",  "+(gl+gr)/2+", "+(bl+br)/2+")");
     //console.log("Left" + rl + " " + gl + " " + bl);
@@ -257,13 +230,54 @@ function DrawCanvas(freeByte, value)
 
         
     }
-    console.log("free: " + freeByte);
-    console.log("value: " + value);
+    //console.log("free: " + freeByte);
+    //console.log("value: " + value);
 
 }
 
 function Generate(){
-    onLoad();
+
+    lockedByte = Math.floor(Math.random() * 3); 
+    var minimum = 0;
+    var maximum = 255;
+
+    var rl = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+    var gl = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+    var bl = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+
+    var rr = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+    var gr = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+    var br = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+
+    var cnv = document.getElementById("cnvTarget");
+    var ctx = cnv.getContext("2d");
+
+    ranX = Math.random() * 256;
+    ranY = Math.random() * 256;
+
+    
+    
+
+    if (lockedByte == 0)
+    {
+        lockedValue = rr =rl;
+        
+        ctx.fillStyle = "rgb(" +rr+",  "+ranX+", "+ranY+")";
+    }
+    else if (lockedByte == 1)
+    {
+        lockedValue = gr = gl;
+        ctx.fillStyle = "rgb(" +ranX+",  "+gr+", "+ranY+")";
+    }
+    else if (lockedByte == 2)
+    {
+        lockedValue = br = bl;
+        ctx.fillStyle = "rgb(" +ranX+",  "+ranY+", "+br+")";
+    }
+
+    DrawCanvas(lockedByte, lockedValue);
+
+    ctx.fillRect(0,0,cnv.width,cnv.height);
 }
 
 var x = setInterval(function() {
@@ -316,8 +330,24 @@ canvas.addEventListener('click', e => {
     paused = true;
 
 
+    var hit = new Hit(GetColor(ranX, ranY), distance, miliseconds);
 
+    hits.push(hit);
 
+    localStorage.setItem("hitList", hits);
+    localStorage.setItem("hitCount", hits.length);
+
+    //console.log(hits[hits.length - 1].distance);
+
+    /*
+    var total = 0;
+
+    for (var i = 0; i < hits.length; i++) {
+        total += hits[i].distance;
+    }
+
+    txt.textContent += "\n" + (total / hits.length);
+    */
 
     var canvas = document.getElementById("cnv");
     var ctx = canvas.getContext("2d");
@@ -329,7 +359,7 @@ canvas.addEventListener('click', e => {
     //ctx.strokeStyle = "#c82124";
 
     // pointer circle
-    ctx.strokeStyle = GetColor(colX, colY);;
+    ctx.strokeStyle = GetNegativeColor(colX, colY);;
     ctx.beginPath();
     ctx.arc(x, y, arcSize, - 2 * Math.PI / 3, - 1 * Math.PI / 3);
     ctx.stroke();
@@ -352,7 +382,7 @@ canvas.addEventListener('click', e => {
 
     ctx.lineWidth = distance > 15 ? 3 : 1;
     //targer circle
-    ctx.strokeStyle = GetColor(ranX, ranY);
+    ctx.strokeStyle = GetNegativeColor(ranX, ranY);
     //ctx.strokeStyle = "#296d98";
     ctx.beginPath();
     ctx.arc((ranX * rect.width / 256), (ranY * rect.height / 256), arcSize / 2, 0, 2 * Math.PI);
@@ -380,7 +410,7 @@ canvas.addEventListener('click', e => {
 
 });
 
-function GetColor(x, y) {
+function GetNegativeColor(x, y) {
     var v1 = x;
     var v2 = y;
     var v3 = lockedValue; 
@@ -410,6 +440,36 @@ function GetColor(x, y) {
     return "#" + redHex + "" + greenHex + "" + blueHex;
 }
 
+function GetColor(x, y) {
+    var v1 = x;
+    var v2 = y;
+    var v3 = lockedValue; 
+
+
+    var redHex, greenHex, blueHex;
+
+    if (lockedByte == 0)
+    {
+        redHex = GetHex(v3);
+        greenHex = GetHex(v1);
+        blueHex = GetHex(v2);
+    }
+    else if (lockedByte == 1)
+    {
+        redHex = GetHex(v1);
+        greenHex = GetHex(v3);
+        blueHex = GetHex(v2);
+    }
+    else if (lockedByte == 2)
+    {
+        redHex = GetHex(v1);
+        greenHex = GetHex(v2);
+        blueHex = GetHex(v3);
+    }
+
+    return "#" + redHex + "" + greenHex + "" + blueHex;
+}
+
 function GetHex(value){
     var Hex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
 
@@ -417,30 +477,11 @@ function GetHex(value){
 
     string = Hex[Math.round(value / 16)] + "" + Hex[Math.round(value % 16)];
 
-    console.log(value + "Hexas: " + string);
+    //console.log(value + "Hexas: " + string);
     return string;
 
 }
 
-function setCookie(name,value,days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-}
-function getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
-}
-function eraseCookie(name) {   
-    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+function statisticsClicked(){
+    localStorage.setItem("hitList", hits)
 }
