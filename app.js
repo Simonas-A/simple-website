@@ -1,12 +1,6 @@
 'use strict'
 
-class Hit {
-    constructor(color, distance, time){
-        this.color = color;
-        this.distance = distance;
-        this.time = time;
-    }
-}
+import Hit from "hit"
 
 const switcher = document.querySelector('.btn');
 
@@ -334,7 +328,12 @@ canvas.addEventListener('click', e => {
 
     hits.push(hit);
 
-    localStorage.setItem("hitList", hits);
+
+    var string = JSON.stringify(hits);
+    console.log(string);
+    localStorage.setItem("hitList", string);
+
+
     localStorage.setItem("hitCount", hits.length);
 
     //console.log(hits[hits.length - 1].distance);
@@ -483,5 +482,5 @@ function GetHex(value){
 }
 
 function statisticsClicked(){
-    localStorage.setItem("hitList", hits)
+    //localStorage.setItem("hitList", hits)
 }
