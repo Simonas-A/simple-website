@@ -1,17 +1,24 @@
 function onLoad() {
-    var value = getCookie("value");
-    var slider = document.querySelector(".slider");
+    var value = localStorage.getItem("waitTime");
 
+    var slider = document.querySelector(".slider");
     var label = document.querySelector(".text");
-    label.textContent = value;
     
+    if (value == undefined)
+    {
+        value = 2000;
+        localStorage.setItem("waitTime", value);
+    }
+
+    label.textContent = "Wait time: " + parseFloat(value / 1000).toFixed(1) + " s";
     slider.value = value;
 }
 
 function onChange(value) {
-    localStorage.setItem("value", value);
+
+    localStorage.setItem("waitTime", value);
     var label = document.querySelector(".text");
-    label.textContent = value;
+    label.textContent = "Wait time: " + parseFloat(value / 1000).toFixed(1) + " s";
 
     //setCookie("value", value, 7);
 }

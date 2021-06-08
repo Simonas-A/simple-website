@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <script src="jquery-3.6.0.js"></script>
-    <script type="module" src="app.js"></script>
+    <!--
+        <script type="module" src="app.js"></script>
+    -->
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,12 +32,13 @@
     <div class="box" style="height: 100px;">
         <div class="center">
             <a class="btn" href="settings.html">Settings</a>
-            <a class="btn" href="statistics.html" onclick="statisticsClicked()">Statistics</a>
+            <a class="btn" href="statistics.html">Statistics</a>
+            <a class="btn" onclick="ClearStats()">Clear stats</a>
         </div>
     </div>
 
     
-    
+    <script src="app.js"></script>
     <noscript>You need to enable JavaScript to view the full site.</noscript>
 </body>
 </html>

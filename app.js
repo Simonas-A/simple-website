@@ -1,6 +1,14 @@
 'use strict'
 
-import Hit from "hit"
+//import Hit from "hit"
+
+class Hit {
+    constructor(color, distance, time){
+        this.color = color;
+        this.distance = distance;
+        this.time = time;
+    }
+}
 
 const switcher = document.querySelector('.btn');
 
@@ -24,7 +32,12 @@ var paused = false;
 
 var hits = [];
 
+var waitTime = 2000;
+
 const slider = document.getElementById("myRange");
+
+
+var timeOut;
 
 function onChange()
 {
@@ -134,9 +147,18 @@ function onLoad()
 {
     Generate();
 
-    var sliderValue = localStorage.getItem("value");
+    waitTime = localStorage.getItem("waitTime");
+
+    hits = JSON.parse(localStorage.getItem("hitList"));
+
+
+    if (waitTime == undefined)
+    {
+        waitTime = 2000;
+    }
+
     //var sliderValue = getCookie("value");
-    txt.textContent = sliderValue;
+    //txt.textContent = sliderValue;
     
 
     //hits = localStorage.getItem("hitList");
@@ -299,6 +321,7 @@ canvas.addEventListener('click', e => {
         Generate();
         miliseconds = 0;
         paused = false;
+        clearTimeout(timeOut);
         return;
     }
 
@@ -330,11 +353,11 @@ canvas.addEventListener('click', e => {
 
 
     var string = JSON.stringify(hits);
-    console.log(string);
+    //console.log(string);
     localStorage.setItem("hitList", string);
 
 
-    localStorage.setItem("hitCount", hits.length);
+    //localStorage.setItem("hitCount", hits.length);
 
     //console.log(hits[hits.length - 1].distance);
 
@@ -397,13 +420,13 @@ canvas.addEventListener('click', e => {
 
     //ctx.fill();
 
-    var x = setTimeout(function() {
+    timeOut = setTimeout(function() {
         if (paused){
             Generate();
             miliseconds = 0;
             paused = false;
         }
-    }, 2000);
+    }, waitTime);
 
 
 
@@ -481,6 +504,7 @@ function GetHex(value){
 
 }
 
-function statisticsClicked(){
-    //localStorage.setItem("hitList", hits)
+function ClearStats(){
+    hits = [];
+    localStorage.setItem("hitList",  JSON.stringify(hits));
 }
