@@ -497,7 +497,12 @@ function GetHex(value){
 
     var string = "";
 
-    string = Hex[Math.round(value / 16)] + "" + Hex[Math.round(value % 16)];
+    string = Hex[Math.floor(value / 16)] + "" + Hex[Math.floor(value % 16)];
+
+    if (string.includes("undefined"))
+    {
+        console.log("UNDEFINED HEX: " + value);
+    }
 
     //console.log(value + "Hexas: " + string);
     return string;
