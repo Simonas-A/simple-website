@@ -163,20 +163,24 @@ function DrawStats(dict) {
     canvas.height = height;
 
 
-    for (var i = 0; i < 12; i++) {
+    var barWidth = 25;
+    var barCount = 12;
 
-        console.log(i + " " + dict.get(i).count);
+    for (var i = 0; i < barCount; i++) {
+
+        //console.log(i + " " + dict.get(i).count);
 
         //var rgb = hslToRgb(i * 30, 1, 0.5);
 
         var rgb = hsvToRgb(i * 30 / 360, 1, 1);
 
-        console.log(rgbToHex(Math.round(rgb[0]), Math.round(rgb[1]), Math.round(rgb[2])));
+        //console.log(rgbToHex(Math.round(rgb[0]), Math.round(rgb[1]), Math.round(rgb[2])));
 
         ctx.fillStyle = rgbToHex(Math.round(rgb[0]), Math.round(rgb[1]), Math.round(rgb[2]));
 
+        ctx.fillRect((width / 2) - barWidth * (barCount / 2) + barWidth * i, height - (dict.get(i).distance / dict.get(i).count) * height / 360, barWidth, height);
 
-        ctx.fillRect(25 * i, 0, 25, 100);
+        console.log(i + " - " + (dict.get(i).distance / dict.get(i).count));
 
         //ctx.fillRect(40, 60, 120, 150);
 

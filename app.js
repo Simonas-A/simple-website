@@ -246,6 +246,15 @@ function DrawCanvas(freeByte, value)
 
         
     }
+
+
+    //Draw answer
+    /*
+    ctx.beginPath();
+    ctx.arc((ranX * canvas.width / 256), (ranY * canvas.height / 256), 15, 0, 2 * Math.PI);
+    ctx.stroke();
+    */
+
     //console.log("free: " + freeByte);
     //console.log("value: " + value);
 
