@@ -178,7 +178,9 @@ function DrawStats(dict) {
 
         ctx.fillStyle = rgbToHex(Math.round(rgb[0]), Math.round(rgb[1]), Math.round(rgb[2]));
 
-        ctx.fillRect((width / 2) - barWidth * (barCount / 2) + barWidth * i, height - (dict.get(i).distance / dict.get(i).count) * height / 360, barWidth, height);
+        var barHeight = (dict.get(i).distance / dict.get(i).count) * height / 360;
+
+        ctx.fillRect((width / 2) - barWidth * (barCount / 2) + barWidth * i, height - barHeight - 150, barWidth, barHeight);
 
         console.log(i + " - " + (dict.get(i).distance / dict.get(i).count));
 
@@ -202,4 +204,10 @@ function DrawStats(dict) {
 
 
     //ctx.fillRect(0, 0, width, height);
+}
+
+function ClearStats(){
+    hits = [];
+    localStorage.setItem("hitList",  JSON.stringify(hits));
+    DrawStats(GetDictionary(hits));
 }

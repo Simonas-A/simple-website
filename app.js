@@ -518,7 +518,3 @@ function GetHex(value){
 
 }
 
-function ClearStats(){
-    hits = [];
-    localStorage.setItem("hitList",  JSON.stringify(hits));
-}
